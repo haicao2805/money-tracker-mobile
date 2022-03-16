@@ -1,0 +1,7 @@
+{
+    "error.invalid-input": "error.invalid-input",
+    "any.required": "any.required",
+    "string.min": "string.min",
+    "username.exist": "Username is existed",
+    "password.notMatch": "Password is not match"
+}
