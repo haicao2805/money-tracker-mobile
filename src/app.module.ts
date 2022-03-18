@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { User } from './user/entity/user.entity';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { JwtService } from '@nestjs/jwt';
+import { AccessToken } from './auth/entity/accessToken';
 
 const Config = ConfigModule.forRoot({
     isGlobal: true,
@@ -20,13 +22,22 @@ const DBConfig = TypeOrmModule.forRoot({
     password: process.env.DB_PASSWORD,
     synchronize: true,
     keepConnectionAlive: true,
-    entities: [User],
+    entities: [User, AccessToken],
     extra: { connectionLimit: 1 },
 });
 
 @Module({
     imports: [Config, DBConfig, UserModule, AuthModule],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        {
+            provide: JwtService,
+            useFactory: () => {
+                return new JwtService({ secret: process.env.JWT_SECRET_KEY });
+            },
+        },
+    ],
+    exports: [AppService],
 })
 export class AppModule {}

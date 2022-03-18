@@ -1,5 +1,6 @@
 {
     "hello": "xin chào",
     "username.exist": "Tên tài khoản đã tồn tại",
-    "password.notMatch": "Mật khẩu không trùng khớp"
+    "password.notMatch": "Mật khẩu không trùng khớp",
+    "login.fail": "Tên đăng nhập hoặc mật khẩu không đúng"
 }

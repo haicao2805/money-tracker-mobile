@@ -4,9 +4,10 @@ import { apiResponse } from '../app/interface/apiResponse';
 import { JoiValidatorPipe } from '../util/validator/validator.pipe';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-import * as bcrypt from 'bcrypt';
 import { RegisterDTO, vRegisterDTO } from './dto/RegisterDTO';
-import { User } from 'src/user/entity/user.entity';
+import { User } from '../user/entity/user.entity';
+import { LoginDTO, vLoginDTO } from './dto/loginDTO';
+import { constant } from '../constant';
 
 @Controller('auth')
 export class AuthController {
@@ -14,27 +15,37 @@ export class AuthController {
 
     @Post('/register')
     @UsePipes(new JoiValidatorPipe(vRegisterDTO))
-    async cRegister(@Body() body: RegisterDTO) {
+    async cRegister(@Body() body: RegisterDTO, @Res() res: Response) {
         const user = await this.userService.findUser('username', body.username);
 
         if (user) {
-            apiResponse.sendError({ details: { errorMessage: { type: 'username.exist' } } }, 'BadRequestException');
-        }
-
-        if (body.password !== body.confirmPassword) {
-            apiResponse.sendError({ details: { errorMessage: { type: 'password.notMatch' } } }, 'BadRequestException');
+            throw apiResponse.sendError({ details: { username: { type: 'field.field-taken' } } }, 'BadRequestException');
         }
 
         const newUser = new User();
         newUser.name = body.name;
         newUser.username = body.username;
-        const saltOrRounds = 10;
-        newUser.password = await bcrypt.hash(body.password, saltOrRounds);
+        newUser.password = await this.authService.encryptPassword(body.password, 10);
+        const insertedUser = await this.userService.saveUser(newUser);
 
-        // console.log(await bcrypt.compare(body.password, newUser.password));
+        const accessToken = await this.authService.createAccessToken(insertedUser);
+        return res.cookie('access-token', accessToken, { maxAge: constant.authController.registerCookieTime }).send();
+    }
 
-        await this.userService.saveUser(newUser);
+    @Post('/login')
+    @UsePipes(new JoiValidatorPipe(vLoginDTO))
+    async cLogin(@Body() body: LoginDTO, @Res() res: Response) {
+        const user = await this.userService.findUser('username', body.username);
+        if (!user) {
+            throw apiResponse.sendError({ details: { errorMessage: { type: 'error.invalid-password-username' } } }, 'BadRequestException');
+        }
 
-        return apiResponse.send({ data: newUser });
+        const isCorrectPassword = await this.authService.decryptPassword(body.password, user.password);
+        if (!isCorrectPassword) {
+            throw apiResponse.sendError({ details: { errorMessage: { type: 'error.invalid-password-username' } } }, 'BadRequestException');
+        }
+
+        const accessToken = await this.authService.createAccessToken(user);
+        return res.cookie('access-token', accessToken, { maxAge: constant.authController.loginCookieTime }).send();
     }
 }
