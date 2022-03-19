@@ -26,15 +26,7 @@ const DBConfig = TypeOrmModule.forRoot({
 @Module({
     imports: [Config, DBConfig, UserModule, AuthModule],
     controllers: [AppController],
-    providers: [
-        AppService,
-        {
-            provide: JwtService,
-            useFactory: () => {
-                return new JwtService({ secret: process.env.JWT_SECRET_KEY });
-            },
-        },
-    ],
+    providers: [AppService],
     exports: [AppService],
 })
 export class AppModule {}

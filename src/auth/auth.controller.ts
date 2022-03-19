@@ -1,5 +1,5 @@
-import { Body, Controller, Post, Res, UsePipes } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Get, Post, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { apiResponse } from '../app/interface/apiResponse';
 import { JoiValidatorPipe } from '../util/validator/validator.pipe';
 import { UserService } from '../user/user.service';
@@ -8,6 +8,7 @@ import { RegisterDTO, vRegisterDTO } from './dto/RegisterDTO';
 import { User } from '../user/entity/user.entity';
 import { LoginDTO, vLoginDTO } from './dto/loginDTO';
 import { constant } from '../constant';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -47,5 +48,20 @@ export class AuthController {
 
         const accessToken = await this.authService.createAccessToken(user);
         return res.cookie('access-token', accessToken, { maxAge: constant.authController.loginCookieTime }).send();
+    }
+
+    // ---------------------------3rd authentication---------------------------
+    @Get('/google')
+    @UseGuards(AuthGuard('google'))
+    cGoogleAuth() {
+        //
+    }
+
+    @Get('/google/callback')
+    @UseGuards(AuthGuard('google'))
+    async cGoogleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+        console.log(req.user);
+        const accessToken = await this.authService.createAccessToken(req.user as User);
+        return res.cookie('re-token', accessToken, { maxAge: constant.authController.googleUserCookieTime }).redirect(process.env.CLIENT_URL);
     }
 }
