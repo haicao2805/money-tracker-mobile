@@ -5,7 +5,7 @@ import * as I18n from 'i18n';
 
 I18n.configure({
     locales: ['vi', 'en'],
-    directory: './src/util/locale/dictionary',
+    directory: './src/core/locale/dictionary',
     defaultLocale: 'en',
     cookie: 'lang',
     missingKeyFn: (locale, value) => {
@@ -19,6 +19,7 @@ export function router(app: INestApplication) {
     app.use(I18n.init);
     app.use(cookieParser());
     app.setGlobalPrefix('/api');
+    app.enableCors({ origin: 'http://localhost:3000', credentials: true });
 
     //handle for multiple language
     app.use((req: Request, res: Response, next: NextFunction) => {

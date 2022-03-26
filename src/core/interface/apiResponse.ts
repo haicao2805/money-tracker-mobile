@@ -6,9 +6,17 @@ import {
     NotFoundException,
     ForbiddenException,
 } from '@nestjs/common';
-import { LocaleService } from '../../util/locale/locale.service';
-import { ErrorType } from '../type/errorType.type';
+import { LocaleService } from '../locale/locale.service';
+
 import { ResponseForDeveloper } from './api.interface';
+
+export type ErrorType =
+    | 'BadGatewayException'
+    | 'BadRequestException'
+    | 'InternalServerErrorException'
+    | 'UnauthorizedException'
+    | 'NotFoundException'
+    | 'ForbiddenException';
 
 class ApiResponse {
     constructor(private readonly localesService: LocaleService) {}

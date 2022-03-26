@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { JwtService } from '@nestjs/jwt';
 import { UserModule } from 'src/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AccessTokenRepository } from './entity/accessToken.repository';
+import { AccessTokenRepository } from '../core/repositories/accessToken';
 import { GoogleStrategy } from './passport/google.strategy';
 
 @Module({

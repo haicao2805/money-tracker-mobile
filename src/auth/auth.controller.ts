@@ -1,14 +1,14 @@
 import { Body, Controller, Get, Post, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { apiResponse } from '../app/interface/apiResponse';
-import { JoiValidatorPipe } from '../util/validator/validator.pipe';
+import { apiResponse } from '../core/interface/apiResponse';
+import { JoiValidatorPipe } from '../core/validator/validator.pipe';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-import { RegisterDTO, vRegisterDTO } from './dto/RegisterDTO';
-import { User } from '../user/entity/user.entity';
-import { LoginDTO, vLoginDTO } from './dto/loginDTO';
-import { constant } from '../constant';
+
+import { LoginDTO, vLoginDTO, RegisterDTO, vRegisterDTO } from './dto';
 import { AuthGuard } from '@nestjs/passport';
+import { constant } from '../core/constant';
+import { User } from '../core/models';
 
 @Controller('auth')
 export class AuthController {

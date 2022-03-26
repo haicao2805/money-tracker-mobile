@@ -1,5 +1,5 @@
 import * as i18n from 'i18n';
-import { ResponseForClient, ResponseForDeveloper } from '../../app/interface/api.interface';
+import { ResponseForClient, ResponseForDeveloper } from '../interface/api.interface';
 import { Dictionary } from './dictionary.type';
 
 export class LocaleService {

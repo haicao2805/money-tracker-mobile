@@ -1,6 +1,6 @@
-import { RepositoryService } from 'src/util/repository/repository.service';
+import { RepositoryService } from '.';
 import { EntityRepository } from 'typeorm';
-import { AccessToken } from './accessToken.entity';
+import { AccessToken } from '../models/accessToken';
 
 @EntityRepository(AccessToken)
 export class AccessTokenRepository extends RepositoryService<AccessToken> {}

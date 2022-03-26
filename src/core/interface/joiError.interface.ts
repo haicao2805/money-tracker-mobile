@@ -1,4 +1,4 @@
-import { Dictionary } from '../../util/locale/dictionary.type';
+import { Dictionary } from '../locale/dictionary.type';
 
 export interface JoiError {
     type: Dictionary;

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../user/entity/user.entity';
-import { AccessToken } from './entity/accessToken.entity';
-import { AccessTokenRepository } from './entity/accessToken.repository';
+
+import { AccessToken } from '../core/models/accessToken';
+import { AccessTokenRepository } from '../core/repositories/accessToken';
+import { User } from '../core/models';
 @Injectable()
 export class AuthService {
     constructor(private readonly jwtService: JwtService, private readonly accessTokenRepository: AccessTokenRepository) {}
