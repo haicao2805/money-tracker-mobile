@@ -1,8 +1,0 @@
-{
-    "error.invalid-input": "error.invalid-input",
-    "any.required": "any.required",
-    "string.min": "string.min",
-    "string.alphanum": "string.alphanum",
-    "field.field-taken": "is existed",
-    "error.invalid-password-username": "username or password is wrong"
-}

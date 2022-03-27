@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Post, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { apiResponse } from '../core/interface/apiResponse';
+
 import { JoiValidatorPipe } from '../core/validator/validator.pipe';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-
+import { StatusCodes } from 'http-status-codes';
 import { LoginDTO, vLoginDTO, RegisterDTO, vRegisterDTO } from './dto';
 import { AuthGuard } from '@nestjs/passport';
 import { constant } from '../core/constant';
@@ -18,10 +18,7 @@ export class AuthController {
     @UsePipes(new JoiValidatorPipe(vRegisterDTO))
     async cRegister(@Body() body: RegisterDTO, @Res() res: Response) {
         const user = await this.userService.findUser('username', body.username);
-
-        if (user) {
-            throw apiResponse.sendError({ details: { username: { type: 'field.field-taken' } } }, 'BadRequestException');
-        }
+        if (user) throw new HttpException({ username: 'field.field-taken' }, StatusCodes.BAD_REQUEST);
 
         const newUser = new User();
         newUser.name = body.name;
@@ -37,14 +34,10 @@ export class AuthController {
     @UsePipes(new JoiValidatorPipe(vLoginDTO))
     async cLogin(@Body() body: LoginDTO, @Res() res: Response) {
         const user = await this.userService.findUser('username', body.username);
-        if (!user) {
-            throw apiResponse.sendError({ details: { errorMessage: { type: 'error.invalid-password-username' } } }, 'BadRequestException');
-        }
+        if (!user) throw new HttpException({ errorMessage: 'error.invalid-password-username' }, StatusCodes.BAD_REQUEST);
 
         const isCorrectPassword = await this.authService.decryptPassword(body.password, user.password);
-        if (!isCorrectPassword) {
-            throw apiResponse.sendError({ details: { errorMessage: { type: 'error.invalid-password-username' } } }, 'BadRequestException');
-        }
+        if (!isCorrectPassword) throw new HttpException({ errorMessage: 'error.invalid-password-username' }, StatusCodes.BAD_REQUEST);
 
         const accessToken = await this.authService.createAccessToken(user);
         return res.cookie('access-token', accessToken, { maxAge: constant.authController.loginCookieTime }).send();

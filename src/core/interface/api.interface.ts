@@ -1,12 +1,10 @@
-import { JoiError } from './joiError.interface';
-
 /**
  * This is response for developer. The response contain technical info
  */
 export interface ResponseForDeveloperDetail {
-    message?: JoiError;
-    errorMessage?: JoiError;
-    [key: string]: JoiError;
+    message?: string;
+    errorMessage?: string;
+    [key: string]: string;
 }
 
 /**
