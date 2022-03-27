@@ -1,9 +1,17 @@
 import * as Joi from 'joi';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterDTO {
+    @ApiProperty({ description: 'Username', example: 'haicao' })
     username: string;
+
+    @ApiProperty({ description: 'Name', example: 'Cao Chi Hai' })
     name: string;
+
+    @ApiProperty({ description: 'Password', example: 'Aa123456' })
     password: string;
+
+    @ApiProperty({ description: 'Confirm password', example: 'Aa123456' })
     confirmPassword: string;
 }
 

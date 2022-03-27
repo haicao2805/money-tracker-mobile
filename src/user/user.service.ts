@@ -17,4 +17,8 @@ export class UserService {
     async findUsers(field: keyof User, value: any): Promise<User[]> {
         return await this.userRepository.findManyByField(field, value);
     }
+
+    async getAll(): Promise<User[]> {
+        return await this.userRepository.find();
+    }
 }

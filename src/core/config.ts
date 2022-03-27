@@ -9,10 +9,10 @@ export const config = {
 
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
     GOOGLE_SECRET: process.env.GOOGLE_SECRET || '',
-    GOOGLE_CLIENT_REDIRECT_URL: process.env.GOOGLE_CLIENT_REDIRECT || 'http://localhost:4001',
+    GOOGLE_CLIENT_REDIRECT_URL: process.env.GOOGLE_CLIENT_REDIRECT || 'http://localhost:4000',
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY || 'this is secret',
-    CLIENT_URL: (process.env.CLIENT_URL || 'http://localhost:4000').split(','),
-    SERVER_URL: process.env.SERVER_URL || 'http://localhost:4001',
+    CLIENT_URL: (process.env.CLIENT_URL || 'http://localhost:3000').split(','),
+    SERVER_URL: process.env.SERVER_URL || 'http://localhost:4000',
 
     PORT: Number(process.env.PORT) || 4000,
     NODE_ENV: process.env.NODE_ENV || monoEnum.NODE_ENV_MODE.DEVELOPMENT,
