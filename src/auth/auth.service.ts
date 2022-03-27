@@ -2,12 +2,10 @@ import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
-import { AccessToken } from '../core/models/accessToken';
-import { AccessTokenRepository } from '../core/repositories/accessToken';
 import { User } from '../core/models';
 @Injectable()
 export class AuthService {
-    constructor(private readonly jwtService: JwtService, private readonly accessTokenRepository: AccessTokenRepository) {}
+    constructor(private readonly jwtService: JwtService) {}
 
     // ---------------------------Bcrypt Service---------------------------
     async encryptPassword(password: string, saltOrRounds: number): Promise<string> {
@@ -35,15 +33,8 @@ export class AuthService {
         }
     }
 
-    async createAccessToken(user: User): Promise<string> {
-        const token = this.encryptAccessToken(user);
-        const accessToken = new AccessToken();
-        accessToken.token = token;
-        accessToken.userId = user.id;
-
-        await this.accessTokenRepository.delete({ userId: user.id });
-        const insertedAccessToken = await this.accessTokenRepository.save(accessToken);
-
-        return insertedAccessToken.id;
+    createAccessToken(user: User): string {
+        const token = this.encryptAccessToken({ id: user.id });
+        return token;
     }
 }

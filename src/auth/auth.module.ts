@@ -1,14 +1,12 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtService } from '@nestjs/jwt';
-import { UserModule } from 'src/user/user.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AccessTokenRepository } from '../core/repositories/accessToken';
+import { UserModule } from '../user/user.module';
 import { GoogleStrategy } from './passport/google.strategy';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([AccessTokenRepository]), UserModule],
+    imports: [forwardRef(() => UserModule)],
     controllers: [AuthController],
     providers: [
         AuthService,
@@ -20,5 +18,6 @@ import { GoogleStrategy } from './passport/google.strategy';
             },
         },
     ],
+    exports: [AuthService],
 })
 export class AuthModule {}

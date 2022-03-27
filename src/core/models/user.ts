@@ -1,7 +1,17 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { ApiProperty, ApiHideProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
+
+export enum UserStatus {
+    ACTIVE = 'active',
+    INACTIVE = 'inactive',
+}
+
+export enum UserRole {
+    ADMIN = 'admin',
+    USER = 'user',
+}
 @Entity()
-export class User extends BaseEntity {
+export class User {
     @ApiProperty({ description: 'Id' })
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -14,7 +24,7 @@ export class User extends BaseEntity {
     @Column({ default: null })
     username: string;
 
-    @ApiHideProperty()
+    @ApiProperty({ description: 'Password' })
     @Column({ default: null })
     password: string;
 
@@ -33,4 +43,12 @@ export class User extends BaseEntity {
     @ApiProperty({ description: 'Update date' })
     @Column({ default: new Date().toISOString().slice(0, 19).replace('T', ' ') })
     updateDate: Date;
+
+    @ApiProperty({ description: 'Status' })
+    @Column({ default: UserStatus.ACTIVE })
+    status: UserStatus;
+
+    @ApiProperty({ description: 'Status' })
+    @Column({ default: UserRole.USER })
+    role: UserRole;
 }

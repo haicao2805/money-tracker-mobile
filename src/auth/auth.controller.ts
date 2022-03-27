@@ -18,7 +18,7 @@ export class AuthController {
 
     @Post('/register')
     @ApiOperation({ summary: 'Create new user' })
-    @ApiCreatedResponse({ type: User })
+    @ApiCreatedResponse({ type: String, description: 'access token' })
     @UsePipes(new JoiValidatorPipe(vRegisterDTO))
     async cRegister(@Body() body: RegisterDTO, @Res() res: Response) {
         const user = await this.userService.findUser('username', body.username);
@@ -32,10 +32,12 @@ export class AuthController {
         const insertedUser = await this.userService.saveUser(newUser);
 
         const accessToken = await this.authService.createAccessToken(insertedUser);
-        return res.cookie('access-token', accessToken, { maxAge: constant.authController.registerCookieTime }).send();
+        return res.cookie('access-token', accessToken, { maxAge: constant.authController.registerCookieTime }).send({ accessTokenId: accessToken });
     }
 
     @Post('/login')
+    @ApiOperation({ summary: 'Login' })
+    @ApiCreatedResponse({ type: String, description: 'access token' })
     @UsePipes(new JoiValidatorPipe(vLoginDTO))
     async cLogin(@Body() body: LoginDTO, @Res() res: Response) {
         const user = await this.userService.findUser('username', body.username);
@@ -45,7 +47,7 @@ export class AuthController {
         if (!isCorrectPassword) throw new HttpException({ errorMessage: 'error.invalid-password-username' }, StatusCodes.BAD_REQUEST);
 
         const accessToken = await this.authService.createAccessToken(user);
-        return res.cookie('access-token', accessToken, { maxAge: constant.authController.loginCookieTime }).send();
+        return res.cookie('access-token', accessToken, { maxAge: constant.authController.loginCookieTime }).send({ accessTokenId: accessToken });
     }
 
     // ---------------------------3rd authentication---------------------------

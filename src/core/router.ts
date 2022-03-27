@@ -22,7 +22,12 @@ export function router(app: INestApplication) {
     app.setGlobalPrefix('/api');
     app.enableCors({ origin: 'http://localhost:4000', credentials: true });
 
-    const configSwagger = new DocumentBuilder().setTitle('mono-nestjs-kit').setDescription('The APIs for mono-nestjs-kit').setVersion('1.0').build();
+    const configSwagger = new DocumentBuilder()
+        .setTitle('mono-nestjs-kit')
+        .setDescription('The APIs for mono-nestjs-kit')
+        .setVersion('1.0')
+        .addBearerAuth({ name: 'Authentication', bearerFormat: 'Bearer', scheme: 'Bearer', in: 'Header', type: 'http' })
+        .build();
 
     const document = SwaggerModule.createDocument(app, configSwagger);
     SwaggerModule.setup('api/explorer', app, document);
