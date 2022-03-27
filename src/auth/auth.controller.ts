@@ -1,4 +1,5 @@
 import { Body, Controller, Get, HttpException, Post, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiCreatedResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
 import { JoiValidatorPipe } from '../core/validator/validator.pipe';
@@ -10,11 +11,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { constant } from '../core/constant';
 import { User } from '../core/models';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService, private readonly userService: UserService) {}
 
     @Post('/register')
+    @ApiOperation({ summary: 'Create new user' })
+    @ApiCreatedResponse({ type: User })
     @UsePipes(new JoiValidatorPipe(vRegisterDTO))
     async cRegister(@Body() body: RegisterDTO, @Res() res: Response) {
         const user = await this.userService.findUser('username', body.username);
@@ -24,6 +28,7 @@ export class AuthController {
         newUser.name = body.name;
         newUser.username = body.username;
         newUser.password = await this.authService.encryptPassword(body.password, 10);
+
         const insertedUser = await this.userService.saveUser(newUser);
 
         const accessToken = await this.authService.createAccessToken(insertedUser);

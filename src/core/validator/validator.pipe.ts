@@ -1,6 +1,7 @@
-import { Injectable, PipeTransform } from '@nestjs/common';
+import { HttpException, Injectable, PipeTransform } from '@nestjs/common';
+import { StatusCodes } from 'http-status-codes';
 import { ObjectSchema, ValidationError } from 'joi';
-import { apiResponse } from '../interface/apiResponse';
+// import { apiResponse } from '../interface/apiResponse';
 
 @Injectable()
 export class JoiValidatorPipe implements PipeTransform {
@@ -17,13 +18,10 @@ export class JoiValidatorPipe implements PipeTransform {
     }
 
     transform(input: any) {
-        if (!input) throw apiResponse.sendError({ data: null, details: { errorMessage: { type: 'error.invalid-input' } } }, 'BadRequestException');
-        /**
-         *  abortEarly:false ==> return all error
-         *  abortEarly:true  ==> return the first error
-         */
-        const { error, value } = this.schema.validate(input, { abortEarly: false });
-        if (error) throw apiResponse.sendError({ data: null, details: this.mapJoiError(error) }, 'BadRequestException');
+        if (!input) throw new HttpException({ errorMessage: 'error.invalid-input' }, StatusCodes.BAD_REQUEST);
+
+        const { error, value } = this.schema.validate(input, { abortEarly: false }); // abortEarly: FALSE => return all error, TRUE: return the first error
+        if (error) throw new HttpException({ errorMessage: 'error.invalid-input', details: this.mapJoiError(error) }, StatusCodes.BAD_REQUEST);
 
         return value;
     }
