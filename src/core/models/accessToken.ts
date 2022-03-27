@@ -10,4 +10,10 @@ export class AccessToken extends BaseEntity {
 
     @Column({ nullable: false })
     userId: string;
+
+    @Column({ default: new Date().toISOString().slice(0, 19).replace('T', ' ') })
+    createDate: Date;
+
+    @Column({ default: new Date().toISOString().slice(0, 19).replace('T', ' ') })
+    updateDate: Date;
 }
