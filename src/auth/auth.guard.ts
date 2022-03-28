@@ -18,12 +18,12 @@ export class UseGuard implements CanActivate {
         const authorization = req.headers['authorization'] || '';
         const token = this.getTokenFromHeader(authorization);
 
-        const { id } = await this.authService.verifyToken<{ id: string }>(token);
-        if (!id) {
+        const tokenInfo = await this.authService.verifyToken<{ id: string }>(token);
+        if (!tokenInfo || !tokenInfo.id) {
             throw new HttpException({}, StatusCodes.UNAUTHORIZED);
         }
 
-        const user = await this.userService.findUser('id', id);
+        const user = await this.userService.findUser('id', tokenInfo.id);
 
         if (!user) {
             throw new HttpException({}, StatusCodes.UNAUTHORIZED);
