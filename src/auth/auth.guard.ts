@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, HttpException, Injectable } from '@nestj
 import { Reflector } from '@nestjs/core';
 import { UserRole } from '../core/models';
 import { AuthService } from './auth.service';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { UserService } from '../user/user.service';
 
@@ -12,7 +12,7 @@ export class UseGuard implements CanActivate {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req: Request = context.switchToHttp().getRequest();
-        const res: Response = context.switchToHttp().getResponse();
+        // const res: Response = context.switchToHttp().getResponse();
         const roles = this.reflector.get<UserRole[]>('roles', context.getHandler()) || [];
 
         const authorization = req.headers['authorization'] || '';
