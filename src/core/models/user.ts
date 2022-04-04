@@ -1,5 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { joiPassword } from 'joi-password';
+import * as joi from 'joi';
 
 export enum UserStatus {
     ACTIVE = 'active',
@@ -56,3 +58,9 @@ export class User {
     @Column({ default: UserRole.USER })
     role: UserRole;
 }
+
+export const userValidateSchema = {
+    name: joi.string().min(5).max(40).trim().lowercase().required(),
+    username: joi.string().max(32).min(5).lowercase().alphanum().required(),
+    password: joiPassword.string().min(8).max(32).trim().alphanum().required(),
+};

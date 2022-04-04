@@ -1,5 +1,6 @@
-import * as Joi from 'joi';
+import * as joi from 'joi';
 import { ApiProperty } from '@nestjs/swagger';
+import { userValidateSchema } from 'src/core/models';
 export class LoginDTO {
     @ApiProperty({ description: 'Username', example: 'haicao' })
     username: string;
@@ -8,7 +9,7 @@ export class LoginDTO {
     password: string;
 }
 
-export const vLoginDTO = Joi.object({
-    username: Joi.string().min(5).max(32).lowercase().trim().alphanum().required(),
-    password: Joi.string().min(5).max(32).trim().alphanum().required(),
+export const vLoginDTO = joi.object<LoginDTO>({
+    username: userValidateSchema.username,
+    password: userValidateSchema.password,
 });

@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext, HttpException, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { User, UserRole } from '../core/models';
+import { UserRole } from '../core/models';
 import { AuthService } from './auth.service';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { UserService } from '../user/user.service';
 
