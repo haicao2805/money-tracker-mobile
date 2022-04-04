@@ -16,8 +16,8 @@ export class RegisterDTO {
 }
 
 export const vRegisterDTO = Joi.object({
-    name: Joi.string().min(5).max(40).trim().lowercase().required(),
-    username: Joi.string().max(32).min(5).lowercase().trim().alphanum().required(),
-    password: Joi.string().min(8).max(32).trim().alphanum().required(),
-    confirmPassword: Joi.string().min(8).max(32).trim().alphanum().required().valid(Joi.ref('password')),
+    name: Joi.string().min(5).max(32).trim().lowercase().required(),
+    username: Joi.string().min(5).max(32).lowercase().trim().alphanum().required(),
+    password: Joi.string().min(5).max(32).trim().alphanum().required(),
+    confirmPassword: Joi.string().min(5).max(32).trim().alphanum().required().valid(Joi.ref('password')),
 });

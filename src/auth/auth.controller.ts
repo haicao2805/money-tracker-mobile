@@ -2,7 +2,6 @@ import { Body, Controller, Get, HttpException, Post, Req, Res, UseGuards, UsePip
 import { ApiTags, ApiOperation, ApiResponse, ApiCreatedResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
-import { JoiValidatorPipe } from '../core/validator/validator.pipe';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { StatusCodes } from 'http-status-codes';
@@ -10,6 +9,7 @@ import { LoginDTO, vLoginDTO, RegisterDTO, vRegisterDTO } from './dto';
 import { AuthGuard } from '@nestjs/passport';
 import { constant } from '../core/constant';
 import { User } from '../core/models';
+import { JoiValidatorPipe } from 'src/core/pipe/validator.pipe';
 
 @ApiTags('auth')
 @Controller('auth')

@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 export enum UserStatus {
@@ -31,6 +31,10 @@ export class User {
     @ApiProperty({ description: 'Email' })
     @Column({ default: null })
     email: string;
+
+    @ApiProperty({ description: 'Is verify' })
+    @Column({ default: false })
+    isVerified: boolean;
 
     @ApiProperty({ description: 'Google id' })
     @Column({ default: null, unique: true })

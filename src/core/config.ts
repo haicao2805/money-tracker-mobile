@@ -14,6 +14,10 @@ export const config = {
     CLIENT_URL: (process.env.CLIENT_URL || 'http://localhost:3000').split(','),
     SERVER_URL: process.env.SERVER_URL || 'http://localhost:4000',
 
+    SENDGRID_KEY: process.env.SENDGRID_KEY || '',
+    SENDGRID_SENDER: process.env.SENDGRID_SENDER || '',
+    SENDGRID_URL: process.env.SENDGRID_URL || '',
+
     PORT: Number(process.env.PORT) || 4000,
     NODE_ENV: process.env.NODE_ENV || monoEnum.NODE_ENV_MODE.DEVELOPMENT,
     DEBUG: process.env.DEBUG || '',

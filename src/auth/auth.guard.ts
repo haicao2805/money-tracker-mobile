@@ -12,18 +12,17 @@ export class UseGuard implements CanActivate {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req: Request = context.switchToHttp().getRequest();
-        const res: Response = context.switchToHttp().getResponse();
         const roles = this.reflector.get<UserRole[]>('roles', context.getHandler()) || [];
 
         const authorization = req.headers['authorization'] || '';
         const token = this.getTokenFromHeader(authorization);
 
-        const { id } = await this.authService.verifyToken<{ id: string }>(token);
-        if (!id) {
+        const { data, error } = await this.authService.verifyToken<{ id: string }>(token);
+        if (error) {
             throw new HttpException({}, StatusCodes.UNAUTHORIZED);
         }
 
-        const user = await this.userService.findUser('id', id);
+        const user = await this.userService.findUser('id', data.id);
 
         if (!user) {
             throw new HttpException({}, StatusCodes.UNAUTHORIZED);

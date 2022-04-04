@@ -9,6 +9,6 @@ export class LoginDTO {
 }
 
 export const vLoginDTO = Joi.object({
-    username: Joi.string().max(32).min(5).lowercase().trim().alphanum().required(),
-    password: Joi.string().min(8).max(32).trim().alphanum().required(),
+    username: Joi.string().min(5).max(32).lowercase().trim().alphanum().required(),
+    password: Joi.string().min(5).max(32).trim().alphanum().required(),
 });

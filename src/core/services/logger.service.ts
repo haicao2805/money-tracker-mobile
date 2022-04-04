@@ -4,7 +4,7 @@ const NS_APP_INFO = 'app-info';
 const NS_APP_ERROR = 'app-error';
 const NS_APP_WARN = 'app-warn';
 
-export class CustomLogger implements LoggerService {
+export class CustomLoggerService implements LoggerService {
     /**
      * Write a 'log' level log.
      */

@@ -25,11 +25,11 @@ export class AuthService {
         }
     }
 
-    verifyToken<T>(tokenData: string) {
+    verifyToken<T>(tokenData: string): { data: T; error: any } {
         try {
-            return this.jwtService.verify<any>(tokenData) as T;
+            return { data: this.jwtService.verify<any>(tokenData) as T, error: null };
         } catch (err) {
-            return null;
+            return { data: null, error: err };
         }
     }
 

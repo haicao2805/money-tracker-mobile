@@ -9,11 +9,11 @@ import { AppModule } from './app.module';
 import { monoLogger } from 'mono-utils-core';
 import { config } from './core';
 import { router } from './core';
-import { CustomLogger } from './core/common/logger';
+import { CustomLoggerService } from './core/services';
 
 export const NS_APP = 'app-info';
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule, { logger: new CustomLogger() });
+    const app = await NestFactory.create(AppModule, { logger: new CustomLoggerService() });
 
     router(app);
 
