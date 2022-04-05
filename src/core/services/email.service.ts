@@ -8,7 +8,7 @@ import { CustomLoggerService } from './logger.service';
 export class EmailService {
     constructor(private readonly mailService: MailService, private readonly customLoggerService: CustomLoggerService) {}
 
-    private sendMail(receiver: string, content: string, subject: string) {
+    private sendMail(receiver: string, subject: string, content: string) {
         const mail: MailDataRequired = {
             to: receiver,
             from: config.SENDGRID_SENDER,
@@ -24,23 +24,17 @@ export class EmailService {
                     // enable: config.NODE_ENV === monoEnum.NODE_ENV_MODE.DEVELOPMENT || config.NODE_ENV === monoEnum.NODE_ENV_MODE.TEST,
                     enable: false,
                 },
-                footer: {
-                    html: `<div>
-                                <p>Thanks,</p>
-                                <p>Mono Infinity Team</p>
-                            </div>`,
-                    enable: true,
-                },
             },
         };
 
         return this.mailService
             .send(mail)
             .then((res) => {
+                console.log(res);
                 return true;
             })
             .catch((error) => {
-                // console.log(error.response.body);
+                console.log(error.response.body);
                 this.customLoggerService.error(error.response.body, 'email.service.ts', 'error');
                 return false;
             });
@@ -49,14 +43,15 @@ export class EmailService {
     async sendEmailForVerify(receiver: string, otp: string) {
         return await this.sendMail(
             receiver,
+            'VERIFY EMAIL',
             `
                                                 <div>
                                                     <h2>Hello, ${receiver}</h2>
+                                                    <p>We are from Mono Infinity Team</p>
                                                     <p>Please click to this link to verify your email:</p>
                                                     <a href="${config.SENDGRID_URL}/user/verify-email/${otp}"></a>
                                                 </div>
         `,
-            'From Mono Infinity Team with Love',
         );
     }
 }

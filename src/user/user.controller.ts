@@ -11,6 +11,7 @@ import { EmailService } from '../core/services';
 import { ChangePasswordDTO, vChangePasswordDTO } from './dto/changePassword.dto';
 import { JoiValidatorPipe } from 'src/core/pipe/validator.pipe';
 import { UpdateNameDTO, vUpdateNameDTO } from './dto/updateName.dto';
+import { JwtToken } from '../core/interface';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -39,7 +40,7 @@ export class UserController {
 
     @Get('/verify/:otp')
     async cVerifyEmail(@Param('otp') otp: string, @Res() res: Response) {
-        const { data, error } = await this.authService.verifyToken<{ id: string }>(otp);
+        const { data, error } = await this.authService.verifyToken<JwtToken>(otp);
         if (error) {
             throw new HttpException({ errorMessage: '' }, StatusCodes.UNAUTHORIZED);
         }

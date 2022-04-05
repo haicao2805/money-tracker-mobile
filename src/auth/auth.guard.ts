@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { UserService } from '../user/user.service';
+import { JwtToken } from '../core/interface';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -17,7 +18,7 @@ export class AuthGuard implements CanActivate {
         const authorization = req.headers['authorization'] || '';
         const token = this.getTokenFromHeader(authorization);
 
-        const { data, error } = await this.authService.verifyToken<{ id: string }>(token);
+        const { data, error } = await this.authService.verifyToken<JwtToken>(token);
         if (error) {
             throw new HttpException({}, StatusCodes.UNAUTHORIZED);
         }
