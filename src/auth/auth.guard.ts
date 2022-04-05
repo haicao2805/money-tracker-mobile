@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import { UserService } from '../user/user.service';
 
 @Injectable()
-export class UseGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
     constructor(private readonly authService: AuthService, private readonly userService: UserService, private readonly reflector: Reflector) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
