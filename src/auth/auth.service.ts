@@ -17,24 +17,28 @@ export class AuthService {
     }
 
     // ---------------------------Token Service---------------------------
-    encryptAccessToken(tokenData: Record<any, any>) {
+    async encryptAccessToken(tokenData: Record<any, any>, minutes?: number) {
         try {
-            return this.jwtService.sign(JSON.stringify(tokenData));
+            if (minutes) {
+                return await this.jwtService.signAsync(tokenData, { expiresIn: minutes * 60 });
+            } else {
+                return this.jwtService.signAsync(tokenData);
+            }
         } catch (err) {
             return null;
         }
     }
 
-    verifyToken<T>(tokenData: string): { data: T; error: any } {
+    async verifyToken<T>(tokenData: string): Promise<{ data: T; error: any }> {
         try {
-            return { data: this.jwtService.verify<any>(tokenData) as T, error: null };
+            return { data: (await this.jwtService.verifyAsync<any>(tokenData)) as T, error: null };
         } catch (err) {
             return { data: null, error: err };
         }
     }
 
-    createAccessToken(user: User): string {
-        const token = this.encryptAccessToken({ id: user.id });
+    async createAccessToken(user: User, minutes?: number): Promise<string> {
+        const token = this.encryptAccessToken({ id: user.id }, minutes);
         return token;
     }
 }

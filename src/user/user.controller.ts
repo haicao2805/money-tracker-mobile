@@ -26,18 +26,19 @@ export class UserController {
             throw new HttpException({ errorMessage: 'error.not_found' }, StatusCodes.BAD_REQUEST);
         }
 
-        // CREATE TOKEN here
-        const otp = '123';
+        const otp = await this.authService.createAccessToken(user, 5);
 
-        const isSent = await this.emailService.sendEmailForVerify(user.email, otp);
-        if (!isSent) throw new HttpException({ errorMessage: 'error.something_wrong' }, StatusCodes.INTERNAL_SERVER_ERROR);
+        try {
+            await this.emailService.sendEmailForVerify(user.email, otp);
+        } catch (error) {
+            throw new HttpException({ errorMessage: 'error.something_wrong' }, StatusCodes.INTERNAL_SERVER_ERROR);
+        }
 
         return res.send({ message: 'success' });
     }
 
     @Get('/verify/:otp')
     async cVerifyEmail(@Param('otp') otp: string, @Res() res: Response) {
-        // FIX Verify logic here
         const { data, error } = await this.authService.verifyToken<{ id: string }>(otp);
         if (error) {
             throw new HttpException({ errorMessage: '' }, StatusCodes.UNAUTHORIZED);
