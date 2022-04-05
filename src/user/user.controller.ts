@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Param, Post, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
 
 import { UserService } from './user.service';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
@@ -8,6 +8,8 @@ import { UseGuard } from '../auth/auth.guard';
 import { AuthService } from '../auth/auth.service';
 import { SendVerifyEmailDTO } from './dto/sendverifyEmail.dto';
 import { EmailService } from '../core/services';
+import { ChangePasswordDTO, vChangePasswordDTO } from './dto/changePassword.dto';
+import { JoiValidatorPipe } from 'src/core/pipe/validator.pipe';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -62,5 +64,20 @@ export class UserController {
         const user = await this.userService.findUser('id', userId);
         if (!user) throw new HttpException({ errorMessage: 'error.not_found' }, StatusCodes.NOT_FOUND);
         return res.send({ data: user });
+    }
+
+    @Post('/change-password')
+    @UsePipes(new JoiValidatorPipe(vChangePasswordDTO))
+    async changePassword(@Body() body: ChangePasswordDTO, @Res() res: Response) {
+        //get current user data
+        const user = await this.userService.findUser('username', body.username);
+        //check current input value is correct or not
+        if (!this.authService.decryptPassword(body.currentPassword, user.password)) {
+            throw new HttpException({ errorMessage: 'error.invalid_current_password' }, StatusCodes.BAD_REQUEST);
+        }
+        //change password to new password
+        user.password = await this.authService.encryptPassword(body.newPassword, 10);
+        await this.userService.saveUser(user);
+        return res.send({ message: 'success' });
     }
 }
