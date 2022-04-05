@@ -37,11 +37,10 @@ export class EmailService {
         return this.mailService
             .send(mail)
             .then((res) => {
-                console.log(res);
                 return true;
             })
             .catch((error) => {
-                console.log(error.response.body);
+                // console.log(error.response.body);
                 this.customLoggerService.error(error.response.body, 'email.service.ts', 'error');
                 return false;
             });
