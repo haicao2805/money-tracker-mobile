@@ -3,9 +3,11 @@ import { UserRepository } from '../../core/repositories';
 import { UserService } from '../../user/user.service';
 import { initTestModule } from '../../core/test/initTest';
 import { AuthService } from '../auth.service';
-import { LoginDTO } from '../dto';
+import { LoginDTO, RegisterDTO } from '../dto';
 import * as supertest from 'supertest';
 import { fakeUser } from '../../core/test/helper';
+import { User } from 'src/core/models';
+import { StatusCodes } from 'http-status-codes';
 
 describe('AuthController', () => {
     let app: INestApplication;
@@ -55,6 +57,30 @@ describe('AuthController', () => {
                 loginUserData.password = '123AABBDASDaa';
                 const res = await reqApi(loginUserData);
                 expect(res.status).toBe(400);
+            });
+        });
+
+        describe('POST /register', () => {
+            let registerData: RegisterDTO;
+            const reqApi = (input: RegisterDTO) => supertest(app.getHttpServer()).post('/api/auth/register').send(input);
+            let getUser: User;
+            beforeEach(async () => {
+                getUser = fakeUser();
+                registerData = {
+                    username: getUser.username,
+                    password: getUser.password,
+                    confirmPassword: getUser.password,
+                    name: getUser.name,
+                };
+            });
+            it('Pass', async () => {
+                const res = await reqApi(registerData);
+                expect(res.body.token).not.toBeNull();
+            });
+            it('Failed (username taken)', async () => {
+                await userService.saveUser(getUser);
+                const res = await reqApi(registerData);
+                expect(res.status).toBe(StatusCodes.BAD_REQUEST);
             });
         });
     });

@@ -9,7 +9,7 @@ import { LoginDTO, vLoginDTO, RegisterDTO, vRegisterDTO } from './dto';
 import { AuthGuard } from '@nestjs/passport';
 import { constant } from '../core/constant';
 import { User } from '../core/models';
-import { JoiValidatorPipe } from 'src/core/pipe/validator.pipe';
+import { JoiValidatorPipe } from '../core/pipe/validator.pipe';
 
 @ApiTags('auth')
 @Controller('auth')
