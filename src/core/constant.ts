@@ -4,8 +4,10 @@ export const constant = Object.freeze({
         registerCookieTime: 1000 * 60 * 60 * 24 * 30,
         googleUserCookieTime: 1000 * 60 * 60 * 24 * 30,
     },
-    userController: {
-        defaultCurrentPage: 1,
-        defaultPageSize: 4,
+    default: {
+        currentPage: 0,
+        pageSize: 12,
+        pageSizeMd: 24,
+        pageSizeLg: 48,
     },
 });
