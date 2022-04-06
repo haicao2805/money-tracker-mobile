@@ -1,38 +1,38 @@
-import { Box, Input, Text } from "native-base";
+import { Box, IInputProps, Input, Text } from "native-base";
 import { FC } from "react";
 import { Controller, useForm, useFormContext } from "react-hook-form";
 
-interface TextFieldInputProps {
+type TextFieldInputProps = {
     name: string;
     label: string;
-}
+};
 
-const TextFieldInput: FC<TextFieldInputProps> = ({ name, label }) => {
+type TextFieldInputPropsExtends = TextFieldInputProps & IInputProps;
+
+const TextFieldInput: FC<TextFieldInputPropsExtends> = ({
+    name,
+    label,
+    ...rest
+}) => {
     const {
-        control,
+        register,
         formState: { errors },
     } = useFormContext();
 
     return (
-        <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-                <>
-                    <Text>{label}</Text>
-                    <Input
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                    {Boolean(errors[name]?.message) && (
-                        <Text>
-                            {label} {errors[name]?.message}
-                        </Text>
-                    )}
-                </>
-            )}
-            name={name}
-        />
+        <Box mb={4} justifyContent="center" alignItems="center">
+            <Box w="95%">
+                <Text fontWeight="medium" fontSize="md">
+                    {label}
+                </Text>
+                <Input {...register(name)} my={2} {...rest} />
+                {Boolean(errors[name]?.message) && (
+                    <Text>
+                        {label} {errors[name]?.message}
+                    </Text>
+                )}
+            </Box>
+        </Box>
     );
 };
 

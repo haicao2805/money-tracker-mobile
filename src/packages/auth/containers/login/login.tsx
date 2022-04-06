@@ -1,10 +1,9 @@
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { FormWrapper } from "../../../../core/components/form";
-import { authAction, LoginDTO, loginSchema } from "./action";
-import { joiResolver } from "@hookform/resolvers/joi";
+import { LoginDTO } from "./action";
 import FormErrorMessage from "../../../../core/components/form/formErrorMessage";
-import { Box, Button } from "native-base";
+import { Box, Button, Image } from "native-base";
 import TextFieldInput from "../../../../core/components/form/textField";
 import FormButton from "../../../../core/components/form/formButton";
 
@@ -18,7 +17,6 @@ const defaultValues: LoginDTO = {
 export const Login: FC<LoginProps> = () => {
     const methods = useForm<LoginDTO>({
         defaultValues,
-        // resolver: joiResolver(loginSchema), error here, I don't know why
     });
 
     const _handleOnSubmit = async (data: LoginDTO) => {
@@ -26,16 +24,36 @@ export const Login: FC<LoginProps> = () => {
     };
 
     return (
-        <FormWrapper methods={methods}>
-            <FormErrorMessage />
-            <Box>
-                <TextFieldInput label="Email" name="email" />
-                <TextFieldInput label="Password" name="password" />
-                <FormButton
-                    label="Submit"
-                    onPress={methods.handleSubmit(_handleOnSubmit)}
+        <Box flex={1} bg="gray.200">
+            <Box justifyContent="center" alignItems="center">
+                <Image
+                    source={require("../../../../../assets/logo/android-icon-144x144.png")}
+                    alt="#"
                 />
             </Box>
-        </FormWrapper>
+            <FormWrapper methods={methods}>
+                <FormErrorMessage />
+                <Box>
+                    <TextFieldInput
+                        label="Email"
+                        name="email"
+                        borderColor="primary.500"
+                    />
+
+                    <TextFieldInput
+                        label="Password"
+                        name="password"
+                        borderColor="primary.500"
+                    />
+
+                    <Box justifyContent="center" alignItems="center">
+                        <FormButton
+                            label="Login"
+                            onPress={methods.handleSubmit(_handleOnSubmit)}
+                        />
+                    </Box>
+                </Box>
+            </FormWrapper>
+        </Box>
     );
 };

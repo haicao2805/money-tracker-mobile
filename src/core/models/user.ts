@@ -14,6 +14,7 @@ export interface User {
     name: string;
     password: string;
     email: string;
+    isVerified: boolean;
     googleId: string;
     createDate: string;
     updateDate: string;

@@ -8,12 +8,17 @@ interface FormButtonProps {
 
 const FormButton: React.FC<FormButtonProps> = ({ label, onPress }) => {
     return (
-        <Button bg={"green.500"} onPress={onPress}>
+        <Button
+            bg="primary.500"
+            borderRadius={100}
+            onPress={onPress}
+            _pressed={{ bg: "primary.500" }}
+        >
             <Text
                 px={4}
                 py={2}
-                color={"white"}
-                fontSize="sm"
+                color="white"
+                fontSize="md"
                 fontWeight="bold"
                 textAlign="center"
             >
