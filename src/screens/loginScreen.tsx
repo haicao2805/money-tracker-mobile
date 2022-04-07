@@ -1,6 +1,6 @@
 import { FC } from "react";
 import AuthLayout from "../packages/auth/AuthLayout";
-import { Login } from "../packages/auth/containers/login/login";
+import { Login } from "../packages/auth/containers/auth/login";
 
 interface LoginScreenProps {}
 

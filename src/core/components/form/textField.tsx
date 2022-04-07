@@ -1,10 +1,12 @@
 import { Box, IInputProps, Input, Text } from "native-base";
+import { ColorType } from "native-base/lib/typescript/components/types";
 import { FC } from "react";
 import { Controller, useForm, useFormContext } from "react-hook-form";
 
 type TextFieldInputProps = {
     name: string;
     label: string;
+    labelColor?: ColorType;
 };
 
 type TextFieldInputPropsExtends = TextFieldInputProps & IInputProps;
@@ -12,6 +14,7 @@ type TextFieldInputPropsExtends = TextFieldInputProps & IInputProps;
 const TextFieldInput: FC<TextFieldInputPropsExtends> = ({
     name,
     label,
+    labelColor,
     ...rest
 }) => {
     const {
@@ -20,8 +23,13 @@ const TextFieldInput: FC<TextFieldInputPropsExtends> = ({
     } = useFormContext();
 
     return (
-        <Box mb={4} w="100%">
-            <Text fontWeight="medium" fontSize="md" mb={2}>
+        <Box mb={2} w="100%">
+            <Text
+                color={labelColor ? labelColor : "black"}
+                fontWeight="medium"
+                fontSize="md"
+                mb={1}
+            >
                 {label}
             </Text>
             <Input {...register(name)} {...rest} />

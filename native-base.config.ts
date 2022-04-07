@@ -14,5 +14,17 @@ export const customTheme = extendTheme({
             800: "#123B1D",
             900: "#051008",
         },
+        secondary: {
+            50: "#FFFDE8",
+            100: "#FFFAD3",
+            200: "#FFF6AB",
+            300: "#FEF282",
+            400: "#FEED5A",
+            500: "#FEE931",
+            600: "#F6DD01",
+            700: "#BEAB01",
+            800: "#867801",
+            900: "#4E4600",
+        },
     },
 });
