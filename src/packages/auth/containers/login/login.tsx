@@ -24,36 +24,38 @@ export const Login: FC<LoginProps> = () => {
     };
 
     return (
-        <Box flex={1} bg="gray.200">
-            <Box justifyContent="center" alignItems="center">
+        <Box flex={1}>
+            <Box justifyContent="center" alignItems="center" pt="10%">
                 <Image
                     source={require("../../../../../assets/logo/android-icon-144x144.png")}
                     alt="#"
                 />
             </Box>
-            <FormWrapper methods={methods}>
-                <FormErrorMessage />
-                <Box>
-                    <TextFieldInput
-                        label="Email"
-                        name="email"
-                        borderColor="primary.500"
-                    />
+            <Box justifyContent="center" alignItems="center">
+                <FormWrapper methods={methods}>
+                    <Box w="80%" justifyContent="center" alignItems="center">
+                        <FormErrorMessage />
 
-                    <TextFieldInput
-                        label="Password"
-                        name="password"
-                        borderColor="primary.500"
-                    />
+                        <TextFieldInput
+                            label="Email"
+                            name="email"
+                            borderColor="primary.500"
+                        />
 
-                    <Box justifyContent="center" alignItems="center">
+                        <TextFieldInput
+                            label="Password"
+                            name="password"
+                            borderColor="primary.500"
+                        />
+
                         <FormButton
                             label="Login"
                             onPress={methods.handleSubmit(_handleOnSubmit)}
+                            w="80%"
                         />
                     </Box>
-                </Box>
-            </FormWrapper>
+                </FormWrapper>{" "}
+            </Box>
         </Box>
     );
 };

@@ -1,18 +1,25 @@
-import { Button, Text } from "native-base";
+import { Button, IButtonProps, Text } from "native-base";
 import * as React from "react";
 import { GestureResponderEvent } from "react-native";
-interface FormButtonProps {
+type FormButtonProps = {
     label: string;
     onPress: (event: GestureResponderEvent) => void;
-}
+};
 
-const FormButton: React.FC<FormButtonProps> = ({ label, onPress }) => {
+type FormButtonPropsExtends = FormButtonProps & IButtonProps;
+
+const FormButton: React.FC<FormButtonPropsExtends> = ({
+    label,
+    onPress,
+    ...rest
+}) => {
     return (
         <Button
             bg="primary.500"
             borderRadius={100}
             onPress={onPress}
             _pressed={{ bg: "primary.500" }}
+            {...rest}
         >
             <Text
                 px={4}

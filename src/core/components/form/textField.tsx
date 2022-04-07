@@ -20,18 +20,16 @@ const TextFieldInput: FC<TextFieldInputPropsExtends> = ({
     } = useFormContext();
 
     return (
-        <Box mb={4} justifyContent="center" alignItems="center">
-            <Box w="95%">
-                <Text fontWeight="medium" fontSize="md">
-                    {label}
+        <Box mb={4} w="100%">
+            <Text fontWeight="medium" fontSize="md" mb={2}>
+                {label}
+            </Text>
+            <Input {...register(name)} {...rest} />
+            {Boolean(errors[name]?.message) && (
+                <Text>
+                    {label} {errors[name]?.message}
                 </Text>
-                <Input {...register(name)} my={2} {...rest} />
-                {Boolean(errors[name]?.message) && (
-                    <Text>
-                        {label} {errors[name]?.message}
-                    </Text>
-                )}
-            </Box>
+            )}
         </Box>
     );
 };
