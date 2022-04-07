@@ -26,7 +26,7 @@ export function router(app: INestApplication) {
         app.use(helmet());
         app.use(compression());
     }
-    //handle for multiple language
+
     app.use((req: Request, res: Response, next: NextFunction) => {
         res.header('Access-Control-Allow-Methods', 'POST, GET, PUT');
         res.header('Access-Control-Allow-Headers', '*');

@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { AuthGuard } from '../auth/auth.guard';
 import { AuthService } from '../auth/auth.service';
-import { SendVerifyEmailDTO } from './dto/sendverifyEmail.dto';
+import { SendVerifyEmailDTO } from './dto/sendVerifyEmail.dto';
 import { EmailService } from '../core/services';
 import { ChangePasswordDTO, vChangePasswordDTO } from './dto/changePassword.dto';
 import { JoiValidatorPipe } from 'src/core/pipe/validator.pipe';
