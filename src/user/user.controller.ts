@@ -12,6 +12,7 @@ import { ChangePasswordDTO, vChangePasswordDTO } from './dto/changePassword.dto'
 import { JoiValidatorPipe } from '../core/pipe/validator.pipe';
 import { UpdateNameDTO, vUpdateNameDTO } from './dto/updateName.dto';
 import { JwtToken } from '../core/interface';
+import { config } from 'src/core';
 
 @ApiTags('user')
 @ApiBearerAuth()
@@ -27,10 +28,10 @@ export class UserController {
             throw new HttpException({ errorMessage: 'error.not_found' }, StatusCodes.BAD_REQUEST);
         }
 
-        const otp = await this.authService.createAccessToken(user, 5);
+        const token = await this.authService.createAccessToken(user, 5);
 
         try {
-            await this.emailService.sendEmailForVerify(user.email, otp);
+            await this.emailService.sendEmailForVerify(user.email, token);
         } catch (error) {
             throw new HttpException({ errorMessage: 'error.something_wrong' }, StatusCodes.INTERNAL_SERVER_ERROR);
         }
@@ -38,9 +39,9 @@ export class UserController {
         return res.send({ message: 'success' });
     }
 
-    @Get('/verify/:otp')
-    async cVerifyEmail(@Param('otp') otp: string, @Res() res: Response) {
-        const { data, error } = await this.authService.verifyToken<JwtToken>(otp);
+    @Get('/verify-email/:token')
+    async cVerifyEmail(@Param('token') token: string, @Res() res: Response) {
+        const { data, error } = await this.authService.verifyToken<JwtToken>(token);
         if (error) {
             throw new HttpException({ errorMessage: '' }, StatusCodes.UNAUTHORIZED);
         }
@@ -53,7 +54,7 @@ export class UserController {
         user.isVerified = true;
         await this.userService.saveUser(user);
 
-        return res.send({});
+        return res.redirect(config.CLIENT_REDIRECT_URL);
     }
 
     @Get('/me')

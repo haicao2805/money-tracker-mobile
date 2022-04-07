@@ -12,7 +12,8 @@ export const config = {
     GOOGLE_CLIENT_REDIRECT_URL: process.env.GOOGLE_CLIENT_REDIRECT || 'http://localhost:4000',
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY || 'this is secret',
     CLIENT_URL: (process.env.CLIENT_URL || 'http://localhost:3000').split(','),
-    SERVER_URL: process.env.SERVER_URL || 'http://localhost:4000',
+    CLIENT_REDIRECT_URL: process.env.CLIENT_REDIRECT_URL || 'http://localhost:3000',
+    SERVER_URL: process.env.SERVER_URL || 'http://localhost:4000/api',
 
     SENDGRID_KEY: process.env.SENDGRID_KEY || '',
     SENDGRID_SENDER: process.env.SENDGRID_SENDER || '',
