@@ -22,13 +22,13 @@ export class UserService {
         return await this.userRepository.find();
     }
 
-    async filterUsers(name: string, skip: number, pageSize: number): Promise<User[]> {
+    async filterUsers(name: string, currentPage: number, pageSize: number): Promise<User[]> {
         return await this.userRepository
             .createQueryBuilder('user')
             .where(`user.name LIKE (:name)`, {
-                name,
+                name: `%${name}%`,
             })
-            .skip(skip)
+            .skip(currentPage * pageSize)
             .take(pageSize)
             .getMany();
     }

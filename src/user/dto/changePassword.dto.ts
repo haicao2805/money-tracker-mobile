@@ -1,11 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import * as joi from 'joi';
-import { userValidateSchema } from 'src/core/models';
+import { userValidateSchema } from '../../core/models';
 
 export class ChangePasswordDTO {
-    @ApiProperty({ description: 'Username', example: 'haicao' })
-    username: string;
-
     @ApiProperty({ description: 'Current password', example: 'Aa123456' })
     currentPassword: string;
 
@@ -17,7 +14,6 @@ export class ChangePasswordDTO {
 }
 
 export const vChangePasswordDTO = joi.object<ChangePasswordDTO>({
-    username: userValidateSchema.username,
     currentPassword: userValidateSchema.password,
     newPassword: userValidateSchema.password,
     confirmNewPassword: joi.string().required().valid(joi.ref('newPassword')),

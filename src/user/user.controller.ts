@@ -9,7 +9,7 @@ import { AuthService } from '../auth/auth.service';
 import { SendVerifyEmailDTO } from './dto/sendVerifyEmail.dto';
 import { EmailService } from '../core/services';
 import { ChangePasswordDTO, vChangePasswordDTO } from './dto/changePassword.dto';
-import { JoiValidatorPipe } from 'src/core/pipe/validator.pipe';
+import { JoiValidatorPipe } from '../core/pipe/validator.pipe';
 import { UpdateNameDTO, vUpdateNameDTO } from './dto/updateName.dto';
 import { JwtToken } from '../core/interface';
 
@@ -70,12 +70,13 @@ export class UserController {
     }
 
     @Put('/password')
+    @UseGuards(AuthGuard)
     @UsePipes(new JoiValidatorPipe(vChangePasswordDTO))
-    async changePassword(@Body() body: ChangePasswordDTO, @Res() res: Response) {
+    async changePassword(@Body() body: ChangePasswordDTO, @Res() res: Response, @Req() req: Request) {
         //get current user data
-        const user = await this.userService.findUser('username', body.username);
+        const user = await this.userService.findUser('id', req.user.id);
         //check current input value is correct or not
-        const isCorrectPassword = this.authService.decryptPassword(body.currentPassword, user.password);
+        const isCorrectPassword = await this.authService.decryptPassword(body.currentPassword, user.password);
         if (!isCorrectPassword) {
             throw new HttpException({ errorMessage: 'error.invalid_current_password' }, StatusCodes.BAD_REQUEST);
         }

@@ -2,7 +2,7 @@ import { constant } from './../../core/constant';
 import { ApiProperty } from '@nestjs/swagger';
 import * as joi from 'joi';
 
-const { defaultCurrentPage, defaultPageSize } = constant.userController;
+const { currentPage, pageSize } = constant.default;
 
 export class FilterUsersDTO {
     @ApiProperty({ description: 'Name', example: 'ha', nullable: true })
@@ -16,7 +16,7 @@ export class FilterUsersDTO {
 }
 
 export const vFilterUsersDto = joi.object({
-    currentPage: joi.number().failover(defaultCurrentPage).min(0).required(),
+    currentPage: joi.number().failover(currentPage).min(0).required(),
     name: joi.string().allow('').failover('').required(),
-    pageSize: joi.number().failover(defaultPageSize).min(0).required(),
+    pageSize: joi.number().failover(pageSize).min(0).required(),
 });
