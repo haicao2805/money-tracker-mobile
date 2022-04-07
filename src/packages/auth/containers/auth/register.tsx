@@ -6,21 +6,22 @@ import { FormWrapper } from "../../../../core/components/form";
 import FormButton from "../../../../core/components/form/formButton";
 import FormErrorMessage from "../../../../core/components/form/formErrorMessage";
 import TextFieldInput from "../../../../core/components/form/textField";
-import { LoginDTO } from "./action";
+import { LoginDTO, RegisterDTO } from "./action";
 
 interface RegisterProps {}
 
-const defaultValues: LoginDTO = {
-    password: "",
+const defaultValues: RegisterDTO = {
     email: "",
+    password: "",
+    confirmPassword: "",
 };
 
 export const Register: FC<RegisterProps> = () => {
-    const methods = useForm<LoginDTO>({
+    const methods = useForm<RegisterDTO>({
         defaultValues,
     });
 
-    const _handleOnSubmit = async (data: LoginDTO) => {
+    const _handleOnSubmit = async (data: RegisterDTO) => {
         console.log(data);
     };
 
@@ -33,9 +34,6 @@ export const Register: FC<RegisterProps> = () => {
                 />
             </Box>
             <Box justifyContent="center" alignItems="center">
-                <Text color="primary.500" fontSize="2xl" fontWeight="bold">
-                    Create Your Account
-                </Text>
                 <FormWrapper methods={methods}>
                     <Box w="80%" justifyContent="center" alignItems="center">
                         <FormErrorMessage />
@@ -52,6 +50,12 @@ export const Register: FC<RegisterProps> = () => {
                             borderColor="primary.500"
                         />
 
+                        <TextFieldInput
+                            label="Confirm password"
+                            name="confirmPassword"
+                            borderColor="primary.500"
+                        />
+
                         <FormButton
                             label="REGISTER"
                             onPress={methods.handleSubmit(_handleOnSubmit)}
@@ -63,7 +67,7 @@ export const Register: FC<RegisterProps> = () => {
             </Box>
 
             <Box justifyContent="center" alignItems="center">
-                <Text mt={8}>
+                <Text mt={4}>
                     Already have an account?{" "}
                     <Link to={{ screen: "Login" }}>
                         <Text color="primary.500">Login</Text>

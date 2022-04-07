@@ -33,9 +33,6 @@ export const Login: FC<LoginProps> = () => {
                 />
             </Box>
             <Box justifyContent="center" alignItems="center">
-                <Text color="primary.500" fontSize="2xl" fontWeight="bold">
-                    Login
-                </Text>
                 <FormWrapper methods={methods}>
                     <Box w="80%" justifyContent="center" alignItems="center">
                         <FormErrorMessage />
@@ -64,7 +61,7 @@ export const Login: FC<LoginProps> = () => {
             </Box>
 
             <Box justifyContent="center" alignItems="center">
-                <Text mt={8}>
+                <Text mt={4}>
                     Don't have an account?{" "}
                     <Link to={{ screen: "Register" }}>
                         <Text color="primary.500">Register</Text>

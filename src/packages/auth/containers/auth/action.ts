@@ -11,6 +11,17 @@ export const loginSchema = Joi.object<LoginDTO>({
     email: userSchema.email,
     password: userSchema.password,
 });
+export interface RegisterDTO extends Pick<User, "email" | "password"> {
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
+
+export const registerSchema = Joi.object<RegisterDTO>({
+    email: userSchema.email,
+    password: userSchema.password,
+    confirmPassword: Joi.string().required().valid(Joi.ref("password")),
+});
 
 export const authAction = {
     login: async (input: LoginDTO) => {
