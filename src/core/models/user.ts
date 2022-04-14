@@ -22,10 +22,6 @@ export class User {
     @Column({ default: null })
     name: string;
 
-    @ApiProperty({ description: 'Username' })
-    @Column({ default: null })
-    username: string;
-
     @ApiProperty({ description: 'Password' })
     @Column({ default: null })
     password: string;

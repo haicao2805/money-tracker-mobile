@@ -34,7 +34,7 @@ describe('AuthController', () => {
             beforeEach(async () => {
                 const getUser = fakeUser();
                 loginUserData = {
-                    username: getUser.username,
+                    email: getUser.email,
                     password: getUser.password,
                 };
                 getUser.password = await authService.encryptPassword(getUser.password, 2);
@@ -48,7 +48,7 @@ describe('AuthController', () => {
             });
 
             it('Failed (username is not correct)', async () => {
-                loginUserData.username = 'updateaaabbbccc';
+                loginUserData.email = 'xxx@gmail.com';
                 const res = await reqApi(loginUserData);
                 expect(res.status).toBe(400);
             });
@@ -67,7 +67,7 @@ describe('AuthController', () => {
             beforeEach(async () => {
                 getUser = fakeUser();
                 registerData = {
-                    username: getUser.username,
+                    email: getUser.email,
                     password: getUser.password,
                     confirmPassword: getUser.password,
                     name: getUser.name,
