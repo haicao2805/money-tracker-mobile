@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+// import { http } from "../api/http";
 import { User, UserRole, UserStatus } from "../models/user";
-import { http } from "../api/http";
 
 export interface UserState extends User {
     isLogin: boolean;
@@ -15,7 +15,7 @@ const initialState: UserState = {
     updateDate: "",
     googleId: "",
     password: "",
-    role: UserRole.ADMIN,
+    role: UserRole.USER,
     status: UserStatus.ACTIVE,
     isLogin: false,
 };
@@ -30,19 +30,19 @@ const slice = createSlice({
     extraReducers: (builder) => {},
 });
 
-export const userThunk = {
-    getCurrentUser: createAsyncThunk<User, void>(
-        "getCurrentUser",
-        async (_, { rejectWithValue }) => {
-            try {
-                const res = await http.get<User>("/user/me");
-                return res.data;
-            } catch (error) {
-                return rejectWithValue(null);
-            }
-        }
-    ),
-};
+// export const userThunk = {
+//     getCurrentUser: createAsyncThunk<User, void>(
+//         "getCurrentUser",
+//         async (_, { rejectWithValue }) => {
+//             try {
+//                 const res = await http.get<User>("/user/me");
+//                 return res.data;
+//             } catch (error) {
+//                 return rejectWithValue(null);
+//             }
+//         }
+//     ),
+// };
 
 export const userActions = {
     ...slice.actions,

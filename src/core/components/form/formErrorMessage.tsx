@@ -1,6 +1,6 @@
+import { Text } from "native-base";
 import { FC } from "react";
 import { useFormContext } from "react-hook-form";
-import { Text } from "react-native";
 
 interface FormErrorMessageProps {}
 
@@ -12,7 +12,7 @@ const FormErrorMessage: FC<FormErrorMessageProps> = () => {
     return (
         <>
             {Boolean(errors.errorMessage?.message) && (
-                <Text>{errors.errorMessage.message}</Text>
+                <Text color="red.500">{errors.errorMessage.message}</Text>
             )}
         </>
     );

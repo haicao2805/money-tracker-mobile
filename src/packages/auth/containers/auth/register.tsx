@@ -6,11 +6,12 @@ import { FormWrapper } from "../../../../core/components/form";
 import FormButton from "../../../../core/components/form/formButton";
 import FormErrorMessage from "../../../../core/components/form/formErrorMessage";
 import TextFieldInput from "../../../../core/components/form/textField";
-import { LoginDTO, RegisterDTO } from "./action";
+import { authAction, RegisterDTO } from "./action";
 
 interface RegisterProps {}
 
 const defaultValues: RegisterDTO = {
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -21,22 +22,26 @@ export const Register: FC<RegisterProps> = () => {
         defaultValues,
     });
 
-    const _handleOnSubmit = async (data: RegisterDTO) => {
-        console.log(data);
+    const _handleOnSubmit = async (values: RegisterDTO) => {
+        try {
+            const res = await authAction.register(values);
+            console.log(res?.token);
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
     };
 
     return (
         <Box flex={1}>
-            <Box justifyContent="center" alignItems="center" pt="10%">
-                <Image
-                    source={require("../../../../../assets/logo/android-icon-144x144.png")}
-                    alt="#"
-                />
-            </Box>
             <Box justifyContent="center" alignItems="center">
                 <FormWrapper methods={methods}>
                     <Box w="80%" justifyContent="center" alignItems="center">
-                        <FormErrorMessage />
+                        <TextFieldInput
+                            label="Name"
+                            name="name"
+                            borderColor="primary.500"
+                        />
 
                         <TextFieldInput
                             label="Email"
@@ -55,6 +60,8 @@ export const Register: FC<RegisterProps> = () => {
                             name="confirmPassword"
                             borderColor="primary.500"
                         />
+
+                        <FormErrorMessage />
 
                         <FormButton
                             label="REGISTER"

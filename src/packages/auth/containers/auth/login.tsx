@@ -1,12 +1,14 @@
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { FormWrapper } from "../../../../core/components/form";
-import { LoginDTO } from "./action";
+import { authAction, LoginDTO } from "./action";
 import FormErrorMessage from "../../../../core/components/form/formErrorMessage";
 import { Box, Image, Text } from "native-base";
 import TextFieldInput from "../../../../core/components/form/textField";
 import FormButton from "../../../../core/components/form/formButton";
-import { Link } from "@react-navigation/native";
+import { Link, useNavigation } from "@react-navigation/native";
+import { store } from "../../../../core/store";
+import { userActions } from "../../../../core/store/userStore";
 
 interface LoginProps {}
 
@@ -19,24 +21,26 @@ export const Login: FC<LoginProps> = () => {
     const methods = useForm<LoginDTO>({
         defaultValues,
     });
+    const navigation = useNavigation();
 
-    const _handleOnSubmit = async (data: LoginDTO) => {
-        console.log(data);
+    const _handleOnSubmit = async (values: LoginDTO) => {
+        try {
+            const res = await authAction.login(values);
+            if (res?.token) {
+                store.dispatch(userActions.updateLogin());
+                navigation.navigate("Root");
+            }
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
     };
 
     return (
         <Box flex={1}>
-            <Box justifyContent="center" alignItems="center" pt="10%">
-                <Image
-                    source={require("../../../../../assets/logo/android-icon-144x144.png")}
-                    alt="#"
-                />
-            </Box>
             <Box justifyContent="center" alignItems="center">
                 <FormWrapper methods={methods}>
                     <Box w="80%" justifyContent="center" alignItems="center">
-                        <FormErrorMessage />
-
                         <TextFieldInput
                             label="Email"
                             name="email"
@@ -49,6 +53,8 @@ export const Login: FC<LoginProps> = () => {
                             borderColor="primary.500"
                             type="password"
                         />
+
+                        <FormErrorMessage />
 
                         <FormButton
                             label="LOG IN"

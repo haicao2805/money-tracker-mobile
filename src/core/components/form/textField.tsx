@@ -1,7 +1,7 @@
 import { Box, IInputProps, Input, Text } from "native-base";
 import { ColorType } from "native-base/lib/typescript/components/types";
 import { FC } from "react";
-import { Controller, useForm, useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 type TextFieldInputProps = {
     name: string;
@@ -18,27 +18,36 @@ const TextFieldInput: FC<TextFieldInputPropsExtends> = ({
     ...rest
 }) => {
     const {
-        register,
+        control,
         formState: { errors },
     } = useFormContext();
 
     return (
-        <Box mb={2} w="100%">
-            <Text
-                color={labelColor ? labelColor : "black"}
-                fontWeight="medium"
-                fontSize="md"
-                mb={1}
-            >
-                {label}
-            </Text>
-            <Input {...register(name)} {...rest} />
-            {Boolean(errors[name]?.message) && (
-                <Text>
-                    {label} {errors[name]?.message}
-                </Text>
+        <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+                <Box mb={2} w="100%">
+                    <Text
+                        color={labelColor ? labelColor : "black"}
+                        fontWeight="medium"
+                        fontSize="md"
+                        mb={1}
+                    >
+                        {label}
+                    </Text>
+                    <Input
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        {...rest}
+                    />
+                    {Boolean(errors[name]?.message) && (
+                        <Text color="red.500">{errors[name]?.message}</Text>
+                    )}
+                </Box>
             )}
-        </Box>
+            name={name}
+        />
     );
 };
 

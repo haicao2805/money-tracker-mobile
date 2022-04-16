@@ -15,16 +15,33 @@ const Auth: FC<AuthProps> = () => {
             </Box>
 
             <Box justifyContent="center" alignItems="center">
-                <Button w="50%" _pressed={{ bg: "primary.500" }} my={2}>
-                    <Link to={{ screen: "Login" }}>
-                        <Text color="white">Login</Text>
-                    </Link>
-                </Button>
-                <Button w="50%" _pressed={{ bg: "primary.500" }} my={2}>
-                    <Link to={{ screen: "Register" }}>
-                        <Text color="white">Register</Text>
-                    </Link>
-                </Button>
+                <Link
+                    to={{ screen: "Login" }}
+                    style={{
+                        width: "50%",
+                        backgroundColor: "#3ABB5E",
+                        textAlign: "center",
+                        marginBottom: 16,
+                        paddingVertical: 16,
+                        borderRadius: 100,
+                    }}
+                >
+                    <Text color="white">Login</Text>
+                </Link>
+
+                <Link
+                    to={{ screen: "Register" }}
+                    style={{
+                        width: "50%",
+                        backgroundColor: "#3ABB5E",
+                        textAlign: "center",
+                        marginBottom: 16,
+                        paddingVertical: 16,
+                        borderRadius: 100,
+                    }}
+                >
+                    <Text color="white">Register</Text>
+                </Link>
             </Box>
         </Box>
     );

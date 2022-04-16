@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 
 export interface RootState {
     api: ApiState;
-    // user: UserState;
+    user: UserState;
 }
 
 const reducers = combineReducers<RootState>({
     api: apiReducer,
-    // user: userReducer,
+    user: userReducer,
 });
 
 export const store = configureStore({
@@ -19,5 +19,6 @@ export const store = configureStore({
 
 export const useStoreApi = () =>
     useSelector<RootState, ApiState>((state) => state.api);
-// export const useStoreUser = () =>
-//     useSelector<RootState, UserState>((state) => state.user);
+
+export const useStoreUser = () =>
+    useSelector<RootState, UserState>((state) => state.user);

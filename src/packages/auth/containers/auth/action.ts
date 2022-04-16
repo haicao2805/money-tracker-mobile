@@ -1,31 +1,46 @@
-import { User, userSchema } from "../../../../core/models/user";
-import Joi from "joi";
+import { User } from "../../../../core/models/user";
 import { http } from "../../../../core/api/http";
+import { AxiosResponse } from "axios";
 
-export interface LoginDTO extends Pick<User, "email" | "password"> {
+export interface LoginDTO {
     email: string;
     password: string;
 }
 
-export const loginSchema = Joi.object<LoginDTO>({
-    email: userSchema.email,
-    password: userSchema.password,
-});
-export interface RegisterDTO extends Pick<User, "email" | "password"> {
+export interface RegisterDTO {
+    name: string;
     email: string;
     password: string;
     confirmPassword: string;
 }
 
-export const registerSchema = Joi.object<RegisterDTO>({
-    email: userSchema.email,
-    password: userSchema.password,
-    confirmPassword: Joi.string().required().valid(Joi.ref("password")),
-});
+interface LoginResponse {
+    token: string;
+}
+interface RegisterResponse {
+    token: string;
+}
 
-export const authAction = {
-    login: async (input: LoginDTO) => {
-        const res = await http.post("/auth/login");
+const login = async (values: LoginDTO): Promise<LoginResponse | null> => {
+    try {
+        const res = await http.post("/auth/login", values);
         return res.data;
-    },
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 };
+
+const register = async (
+    values: RegisterDTO
+): Promise<RegisterResponse | null> => {
+    try {
+        const res = await http.post("/auth/register", values);
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
+export const authAction = { login, register };
